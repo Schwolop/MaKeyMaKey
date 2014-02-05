@@ -312,7 +312,13 @@ void updateInputStates() {
         inputChanged = true;
         inputs[i].pressed = false;
         if (inputs[i].isKey) {
-          Keyboard.release(inputs[i].keyCode);
+          if( inputs[i].keyCode == VOLUME_UP || inputs[i].keyCode == VOLUME_DOWN || inputs[i].keyCode == VOLUME_MUTE ) {
+            // Special case for volume keys.
+            Keyboard.release_direct(inputs[i].keyCode);
+          }
+          else {
+            Keyboard.release(inputs[i].keyCode);
+          }
         }
         if (inputs[i].isMouseMotion) {  
           mouseHoldCount[i] = 0;  // input becomes released, reset mouse hold
@@ -327,7 +333,13 @@ void updateInputStates() {
         inputChanged = true;
         inputs[i].pressed = true; 
         if (inputs[i].isKey) {
-          Keyboard.press(inputs[i].keyCode);
+          if( inputs[i].keyCode == VOLUME_UP || inputs[i].keyCode == VOLUME_DOWN || inputs[i].keyCode == VOLUME_MUTE ) {
+            // Special case for volume keys:
+            Keyboard.press_direct(inputs[i].keyCode);
+          }
+          else {
+            Keyboard.press(inputs[i].keyCode);
+          }
         }
       }
     }

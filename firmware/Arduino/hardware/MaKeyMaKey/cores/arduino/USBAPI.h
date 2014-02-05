@@ -39,6 +39,7 @@ public:
 	virtual int read(void);
 	virtual void flush(void);
 	virtual size_t write(uint8_t);
+	using Print::write; // pull in write(str) and write(buf, size) from Print
 	operator bool();
 };
 extern Serial_ Serial;
@@ -109,6 +110,9 @@ extern Mouse_ Mouse;
 #define KEY_F10				0xCB
 #define KEY_F11				0xCC
 #define KEY_F12				0xCD
+#define VOLUME_MUTE			0x7F
+#define VOLUME_UP			0x80
+#define VOLUME_DOWN			0x81
 
 //	Low level key report: up to 6 keys and shift, ctrl etc at once
 typedef struct
@@ -122,14 +126,16 @@ class Keyboard_ : public Print
 {
 private:
 	KeyReport _keyReport;
-public:
 	void sendReport(KeyReport* keys);
+public:
 	Keyboard_(void);
 	void begin(void);
 	void end(void);
 	virtual size_t write(uint8_t k);
 	virtual size_t press(uint8_t k);
+	virtual size_t press_direct(uint8_t k);
 	virtual size_t release(uint8_t k);
+	virtual size_t release_direct(uint8_t k);
 	virtual void releaseAll(void);
 };
 extern Keyboard_ Keyboard;
